@@ -12,7 +12,8 @@ import {
   Avatar,
   Text,
   Button,
-  Link
+  Link,
+  useToast,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 
@@ -27,6 +28,24 @@ const addresses = {
   },
   gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
 };
+
+function CopyToast({toCopy}) {
+  const toast = useToast();
+  return (
+    <CopyIcon
+      onClick={() => {
+        navigator.clipboard.writeText(toCopy);
+        toast({
+          title: "Copied",
+          description: "Address Copied to clipboard",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }}
+    />
+  );
+}
 
 function SafeList({ provider }) {
   const [account, setAccount] = useState("");
@@ -175,12 +194,7 @@ function SafeList({ provider }) {
                       {tx.transactionHash.substring(0, 6) +
                         "..." +
                         tx.transactionHash.substring(60)}
-                      <CopyIcon
-                        onClick={() => {
-                          navigator.clipboard.writeText(tx.transactionHash);
-                        }}
-                        ml={2}
-                      />
+                      <CopyToast toCopy={tx.transactionHash}/>
                     </Text>
                   </Box>
                 </Flex>
@@ -346,12 +360,7 @@ function App() {
                 p={5}
               >
                 <Text fontSize={"2xl"} align="center" color={"#EF495E"}>
-                  {addresses.gnosisSafe}{" "}
-                  <CopyIcon
-                    onClick={() => {
-                      navigator.clipboard.writeText(addresses.gnosisSafe);
-                    }}
-                  />
+                  {addresses.gnosisSafe} <CopyToast toCopy={addresses.gnosisSafe} />
                 </Text>
               </Box>
             </Box>
@@ -363,7 +372,10 @@ function App() {
               color={"#EF495E"}
             >
               <Text>
-                <Link href="https://hackmd.io/_S8byns4RgazP7YenJJl9w" isExternal>
+                <Link
+                  href="https://hackmd.io/_S8byns4RgazP7YenJJl9w"
+                  isExternal
+                >
                   More about MFT <ExternalLinkIcon mx="2px" />
                 </Link>
               </Text>
