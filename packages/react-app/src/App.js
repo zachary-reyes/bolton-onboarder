@@ -12,9 +12,9 @@ import {
   Avatar,
   Text,
   Button,
+  Link
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-
 
 import { fetchSafeBalances, fetchSafeIncomingTxs } from "./utils/requests";
 
@@ -23,9 +23,9 @@ const addresses = {
     eth: "0x38064F40B20347d58b326E767791A6f79cdEddCe",
     xdai: "0x0F50B2F3165db96614fbB6E4262716acc9F9e098",
     kovan: "0x9c5d087f912e7187D9c75e90999b03FB31Ee17f5",
-    rinkeby: "0xC33a4EfecB11D2cAD8E7d8d2a6b5E7FEacCC521d"
+    rinkeby: "0xC33a4EfecB11D2cAD8E7d8d2a6b5E7FEacCC521d",
   },
-  gnosisSafe: "0x3Be7264F5b60635F434559Ab4abc839958768cF2",
+  gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
 };
 
 function SafeList({ provider }) {
@@ -33,7 +33,7 @@ function SafeList({ provider }) {
   const [safeTxInfo, setSafeTxInfo] = useState(null);
   const [safeBalances, setSafeBalances] = useState(null);
   const [boban, setBoban] = useState(null);
-  const [goal] = useState(20);
+  const [goal] = useState(30);
   // const [network, setNetwork] = useState(null);
 
   useEffect(() => {
@@ -248,7 +248,7 @@ function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
 }
 
 function calculateTimeLeft() {
-  const launch = "2021-11-1";
+  const launch = "2021-10-29";
   const difference = +new Date(launch) - +new Date();
   let timeLeft = {};
 
@@ -363,8 +363,9 @@ function App() {
               color={"#EF495E"}
             >
               <Text>
-                More about MFT
-                <ExternalLinkIcon />
+                <Link href="https://daohaus.club" isExternal>
+                  More about MFT <ExternalLinkIcon mx="2px" />
+                </Link>
               </Text>
             </Flex>
           </Stack>
