@@ -363,7 +363,7 @@ function App() {
               color={"#EF495E"}
             >
               <Text>
-                <Link href="https://daohaus.club" isExternal>
+                <Link href="https://hackmd.io/_S8byns4RgazP7YenJJl9w" isExternal>
                   More about MFT <ExternalLinkIcon mx="2px" />
                 </Link>
               </Text>
