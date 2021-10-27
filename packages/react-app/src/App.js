@@ -9,11 +9,9 @@ import {
   Box,
   Flex,
   Stack,
-
   Avatar,
   Text,
   Button,
-
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { addresses } from "@project/contracts";
@@ -25,11 +23,17 @@ function SafeList({ provider }) {
   const [safeTxInfo, setSafeTxInfo] = useState(null);
   const [safeBalances, setSafeBalances] = useState(null);
   const [boban, setBoban] = useState(null);
+  const [goal] = useState(20);
   // const [network, setNetwork] = useState(null);
 
   useEffect(() => {
     async function fetchAccount() {
       try {
+        const balance = await fetchSafeBalances("mainnet", {
+          safeAddress: addresses.gnosisSafe,
+        });
+        const bal = balance.find((bal) => bal.tokenAddress === null);
+        setSafeBalances(utils.formatEther(bal.balance));
         if (!provider) {
           return;
         }
@@ -38,9 +42,7 @@ function SafeList({ provider }) {
         const safeTx = await fetchSafeIncomingTxs("mainnet", {
           safeAddress: addresses.gnosisSafe,
         });
-        const balance = await fetchSafeBalances("mainnet", {
-          safeAddress: addresses.gnosisSafe,
-        });
+
         // console.log(balance);
         console.log(safeTx);
 
@@ -51,8 +53,7 @@ function SafeList({ provider }) {
             (tx.tokenAddress === null ||
               tx.tokenAddress === "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
         );
-        const bal = balance.find((bal) => bal.tokenAddress === null);
-        setSafeBalances(utils.formatEther(bal.balance));
+
         setSafeTxInfo(ethWethIn);
 
         let total = 0;
@@ -80,15 +81,15 @@ function SafeList({ provider }) {
       <Flex justifyContent="center">
         <Box ml={5} mr={5}>
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
-            GOAL
+            Goal
           </Text>
           <Text color={"#EF495E"} fontSize={"5xl"}>
-            20 Ξ
+            {goal} Ξ
           </Text>
         </Box>
         <Box ml={5} mr={5} w={"50%"} align="center">
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
-            IN BANK
+            In Bank {(+safeBalances).toFixed(4) > goal && " (goal reached)"}
           </Text>
           <Text color={"#EF495E"} fontSize={"5xl"}>
             {safeBalances && <span>{`${(+safeBalances).toFixed(4)} Ξ`}</span>}
@@ -96,13 +97,32 @@ function SafeList({ provider }) {
         </Box>
         <Box ml={5} mr={5}>
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
-            YOUR POWER
+            Your Power
           </Text>
           <Text color={"#EF495E"} fontSize={"5xl"}>
             {boban ? boban.toFixed(2) : 0}
           </Text>
         </Box>
       </Flex>
+      {!account && (
+        <Flex
+          border={"solid"}
+          rounded={"sm"}
+          borderColor={"#272727"}
+          borderWidth={"thin"}
+          h={20}
+          ml={20}
+          mr={20}
+          justifyContent="center"
+          align="center"
+        >
+          <Box>
+            <Text fontSize={"2xl"} color={"#E5E5E5"}>
+              Connect Wallet
+            </Text>
+          </Box>
+        </Flex>
+      )}
       <Flex
         border={"solid"}
         rounded={"sm"}
@@ -115,7 +135,13 @@ function SafeList({ provider }) {
           <Flex backgroundColor="#0C0C0C">
             {safeTxInfo &&
               safeTxInfo?.map((tx, idx) => (
-                <Flex justifyContent="space-between" w="100%" align="center" h={20} key={idx}>
+                <Flex
+                  justifyContent="space-between"
+                  w="100%"
+                  align="center"
+                  h={20}
+                  key={idx}
+                >
                   <Box ml={10}>
                     <Text fontSize={"lg"} color={"#E5E5E5"}>
                       {idx + 1 + ""}
@@ -297,7 +323,7 @@ function App() {
             </Flex>
             <Box justifyContent="center" pl={20} pr={20}>
               <Text align="center" color={"#E5E5E5"}>
-                YEET funds TO:{" "}
+                Yeet funds to:{" "}
               </Text>
               <Box
                 align="center"
@@ -320,8 +346,16 @@ function App() {
               </Box>
             </Box>
             <SafeList provider={provider} />
-            <Flex pr={20} alignItems="center" justifyContent="flex-end" color={"#EF495E"}>
-              <Text>More about MFT<ExternalLinkIcon /></Text>
+            <Flex
+              pr={20}
+              alignItems="center"
+              justifyContent="flex-end"
+              color={"#EF495E"}
+            >
+              <Text>
+                More about MFT
+                <ExternalLinkIcon />
+              </Text>
             </Flex>
           </Stack>
         </Stack>

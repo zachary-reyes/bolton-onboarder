@@ -1,10 +1,12 @@
 import "./index.css";
+import "@fontsource/mulish/400.css"
+import "@fontsource/mulish/700.css"
 
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
 import React from "react";
 import ReactDOM from "react-dom";
-import { ChakraProvider } from "@chakra-ui/react"
+import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 
 import App from "./App";
 
@@ -14,9 +16,16 @@ const client = new ApolloClient({
   uri: "https://api.thegraph.com/subgraphs/name/paulrberg/create-eth-app",
 });
 
+const theme = extendTheme({
+  fonts: {
+    heading: "Mulish",
+    body: "Mulish",
+  },
+})
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
     <App />
     </ChakraProvider>
   </ApolloProvider>,
