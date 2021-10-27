@@ -35,8 +35,8 @@ function useWeb3Modal(config = {}) {
   const loadWeb3Modal = useCallback(async () => {
     const newProvider = await web3Modal.connect();
     const provider = new Web3Provider(newProvider)
-    console.log('load', provider);
-    console.log('load network', provider.network);
+    // console.log('load', provider);
+    // console.log('load network', provider.network);
     setProvider(provider);
   }, [web3Modal]);
 

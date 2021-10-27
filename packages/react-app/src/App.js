@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 
 import React, { useEffect, useState } from "react";
 
@@ -19,17 +19,31 @@ import { ArrowForwardIcon, CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 
 import { fetchSafeBalances, fetchSafeIncomingTxs } from "./utils/requests";
 
-const addresses = {
-  molochSummoner: {
-    eth: "0x38064F40B20347d58b326E767791A6f79cdEddCe",
-    xdai: "0x0F50B2F3165db96614fbB6E4262716acc9F9e098",
-    kovan: "0x9c5d087f912e7187D9c75e90999b03FB31Ee17f5",
-    rinkeby: "0xC33a4EfecB11D2cAD8E7d8d2a6b5E7FEacCC521d",
-  },
+const config = {
+  network: "mainnet",
+  //network: "xdai",
+  logo: logo,
+  launch: "2021-10-29",
+  goal: 30,
+  //gnosisSafe: "0xe8169d5b5287aa05082a9aa45f222075EFEB68E1",
   gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
+  // nativeToken: true,
+  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+  //token: "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
+  tokenSymbol: "Ξ",
+  website: "https://hackmd.io/_S8byns4RgazP7YenJJl9w",
 };
 
-function CopyToast({toCopy}) {
+// const addresses = {
+//   molochSummoner: {
+//     eth: "0x38064F40B20347d58b326E767791A6f79cdEddCe",
+//     xdai: "0x0F50B2F3165db96614fbB6E4262716acc9F9e098",
+//     kovan: "0x9c5d087f912e7187D9c75e90999b03FB31Ee17f5",
+//     rinkeby: "0xC33a4EfecB11D2cAD8E7d8d2a6b5E7FEacCC521d",
+//   },
+// };
+
+function CopyToast({ toCopy }) {
   const toast = useToast();
   return (
     <CopyIcon
@@ -52,35 +66,45 @@ function SafeList({ provider }) {
   const [safeTxInfo, setSafeTxInfo] = useState(null);
   const [safeBalances, setSafeBalances] = useState(null);
   const [boban, setBoban] = useState(null);
-  const [goal] = useState(30);
+  const [goal] = useState(config.goal);
   // const [network, setNetwork] = useState(null);
 
   useEffect(() => {
     async function fetchAccount() {
       try {
-        const balance = await fetchSafeBalances("mainnet", {
-          safeAddress: addresses.gnosisSafe,
+        const balance = await fetchSafeBalances(config.network, {
+          safeAddress: config.gnosisSafe,
         });
         const bal = balance.find((bal) => bal.tokenAddress === null);
-        setSafeBalances(utils.formatEther(bal.balance));
+        const tokenBal = balance.find(
+          (bal) =>
+            bal.tokenAddress &&
+            bal.tokenAddress.toLowerCase() === config.token.toLowerCase()
+        );
+   
+        setSafeBalances(
+          utils.formatEther(
+            BigNumber.from(bal?.balance || 0).add(BigNumber.from(tokenBal?.balance || 0))
+          )
+        );
         if (!provider) {
           return;
         }
         const accounts = await provider.listAccounts();
         setAccount(accounts[0]);
-        const safeTx = await fetchSafeIncomingTxs("mainnet", {
-          safeAddress: addresses.gnosisSafe,
+        const safeTx = await fetchSafeIncomingTxs(config.network, {
+          safeAddress: config.gnosisSafe,
         });
 
-        // console.log(balance);
-        console.log(safeTx);
+        // console.log("balance", balance);
+        // console.log(safeTx);
 
         // weth or eth
         const ethWethIn = safeTx?.results.filter(
           (tx) =>
             tx.from === account &&
             (tx.tokenAddress === null ||
-              tx.tokenAddress === "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
+              tx.tokenAddress.toLowerCase() === config.token.toLowerCase())
         );
 
         setSafeTxInfo(ethWethIn);
@@ -89,10 +113,11 @@ function SafeList({ provider }) {
         ethWethIn.forEach((bal) => {
           total += parseFloat(utils.formatEther(bal.value));
         });
+        // console.log("total", total);
         setBoban(
           (total /
             utils.formatEther(
-              balance.find((bal) => bal.tokenAddress === null).balance
+              BigNumber.from(bal?.balance || 0).add(BigNumber.from(tokenBal?.balance || 0))
             )) *
             100
         );
@@ -113,7 +138,7 @@ function SafeList({ provider }) {
             Goal
           </Text>
           <Text color={"#EF495E"} fontSize={"5xl"}>
-            {goal} Ξ
+            {goal} {config.tokenSymbol}
           </Text>
         </Box>
         <Box ml={5} mr={5} w={"50%"} align="center">
@@ -121,7 +146,11 @@ function SafeList({ provider }) {
             In Bank {(+safeBalances).toFixed(4) > goal && " (goal reached)"}
           </Text>
           <Text color={"#EF495E"} fontSize={"5xl"}>
-            {safeBalances && <span>{`${(+safeBalances).toFixed(4)} Ξ`}</span>}
+            {safeBalances && (
+              <span>{`${(+safeBalances).toFixed(4)} ${
+                config.tokenSymbol
+              }`}</span>
+            )}
           </Text>
         </Box>
         <Box ml={5} mr={5}>
@@ -161,7 +190,7 @@ function SafeList({ provider }) {
         mr={20}
       >
         <Box w="100%">
-          <Flex backgroundColor="#0C0C0C">
+          <Flex backgroundColor="#0C0C0C" flexDirection={"column"}>
             {safeTxInfo &&
               safeTxInfo?.map((tx, idx) => (
                 <Flex
@@ -181,12 +210,14 @@ function SafeList({ provider }) {
                       fontSize={"lg"}
                       color={"#E5E5E5"}
                     >{`${utils.formatEther(tx.value)} ${
-                      !tx.tokenAddress ? "Ξ" : "wΞ"
+                      !tx.tokenAddress
+                        ? `${config.tokenSymbol}`
+                        : `w${config.tokenSymbol}`
                     }`}</Text>
                   </Box>
                   <Box ml={10}>
                     <Text fontSize={"lg"} color={"#E5E5E5"}>
-                      {tx.executionDate}
+                      {new Date(tx.executionDate).toLocaleString()}
                     </Text>
                   </Box>
                   <Box m={10}>
@@ -194,7 +225,7 @@ function SafeList({ provider }) {
                       {tx.transactionHash.substring(0, 6) +
                         "..." +
                         tx.transactionHash.substring(60)}
-                      <CopyToast toCopy={tx.transactionHash}/>
+                      <CopyToast toCopy={tx.transactionHash} />
                     </Text>
                   </Box>
                 </Flex>
@@ -262,7 +293,7 @@ function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
 }
 
 function calculateTimeLeft() {
-  const launch = "2021-10-29";
+  const launch = config.launch;
   const difference = +new Date(launch) - +new Date();
   let timeLeft = {};
 
@@ -297,7 +328,6 @@ function App() {
       return;
     }
     const setup = async () => {
-      console.log("network123", provider.network);
       provider.provider.on("chainChanged", (chainId) => {
         window.location.reload();
       });
@@ -337,7 +367,11 @@ function App() {
             </Flex>
             <Flex alignItems="flex-start" justifyContent="center">
               <Flex>
-                <Avatar size="2xl" backgroundColor="#0C0C0C" src={logo} />
+                <Avatar
+                  size="2xl"
+                  backgroundColor="#0C0C0C"
+                  src={config.logo}
+                />
               </Flex>
               {timerComponents.length ? (
                 timerComponents
@@ -360,7 +394,7 @@ function App() {
                 p={5}
               >
                 <Text fontSize={"2xl"} align="center" color={"#EF495E"}>
-                  {addresses.gnosisSafe} <CopyToast toCopy={addresses.gnosisSafe} />
+                  {config.gnosisSafe} <CopyToast toCopy={config.gnosisSafe} />
                 </Text>
               </Box>
             </Box>
@@ -372,10 +406,7 @@ function App() {
               color={"#EF495E"}
             >
               <Text>
-                <Link
-                  href="https://hackmd.io/_S8byns4RgazP7YenJJl9w"
-                  isExternal
-                >
+                <Link href={config.website} isExternal>
                   More about MFT <ExternalLinkIcon mx="2px" />
                 </Link>
               </Text>
