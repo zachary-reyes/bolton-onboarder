@@ -4,6 +4,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
 import React from "react";
 import ReactDOM from "react-dom";
+import { ChakraProvider } from "@chakra-ui/react"
 
 import App from "./App";
 
@@ -15,7 +16,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
+    <ChakraProvider>
     <App />
+    </ChakraProvider>
   </ApolloProvider>,
   document.getElementById("root"),
 );
