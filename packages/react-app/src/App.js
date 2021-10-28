@@ -414,6 +414,9 @@ function App() {
                 <Link href={config.website} isExternal>
                   More about MFT <ExternalLinkIcon mx="2px" />
                 </Link>
+                <Link ml={6} href={"https://daohaus.club/"} isExternal>
+                  Bolt on for Daohaus <ExternalLinkIcon mx="2px" />
+                </Link>
               </Text>
             </Flex>
           </Stack>
