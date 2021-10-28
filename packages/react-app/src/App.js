@@ -381,7 +381,7 @@ function App() {
             </Flex>
             <Box justifyContent="center" pl={20} pr={20}>
               <Text align="center" color={"#E5E5E5"}>
-                Yeet funds to:{" "}
+                Yeet ({config.network}) funds to:{" "}
               </Text>
               <Box
                 align="center"
