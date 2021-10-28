@@ -61,9 +61,11 @@ function CopyToast({ toCopy }) {
   );
 }
 
-function SafeList({ provider }) {
+function SafeList({ provider}) {
   const [account, setAccount] = useState("");
+  const [toggleList, ] = useState(false);
   const [safeTxInfo, setSafeTxInfo] = useState(null);
+  const [, setSafeTxInfoAll] = useState(null);
   const [safeBalances, setSafeBalances] = useState(null);
   const [boban, setBoban] = useState(null);
   const [goal] = useState(config.goal);
@@ -102,15 +104,16 @@ function SafeList({ provider }) {
         // weth or eth
         const ethWethIn = safeTx?.results.filter(
           (tx) =>
-            tx.from === account &&
+            // tx.from === account &&
             (tx.tokenAddress === null ||
               tx.tokenAddress.toLowerCase() === config.token.toLowerCase())
         );
+        setSafeTxInfoAll(ethWethIn);
 
-        setSafeTxInfo(ethWethIn);
-
+        setSafeTxInfo(ethWethIn.filter((tx)=>tx.from === account));
+        console.log(ethWethIn, toggleList);
         let total = 0;
-        ethWethIn.forEach((bal) => {
+        ethWethIn.filter((tx)=>tx.from === account).forEach((bal) => {
           total += parseFloat(utils.formatEther(bal.value));
         });
         // console.log("total", total);
@@ -124,18 +127,19 @@ function SafeList({ provider }) {
       } catch (err) {
         setSafeTxInfo(null);
         setSafeBalances(null);
+        setSafeTxInfoAll(null)
         console.error(err);
       }
     }
     fetchAccount();
-  }, [account, provider, setSafeTxInfo]);
+  }, [account, provider, setSafeTxInfo, setSafeTxInfoAll, toggleList]);
 
   return (
     <Box rounded="lg">
       <Flex justifyContent="center">
         <Box ml={5} mr={5}>
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
-            Goal
+            Min Goal
           </Text>
           <Text color={"#EF495E"} fontSize={"5xl"}>
             {goal} {config.tokenSymbol}
@@ -233,6 +237,7 @@ function SafeList({ provider }) {
           </Flex>
         </Box>
       </Flex>
+      {/* <Button onClick={()=> setToggleList(true)}>vlivk</Button> */}
     </Box>
   );
 }
