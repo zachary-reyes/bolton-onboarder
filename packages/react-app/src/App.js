@@ -23,7 +23,7 @@ const config = {
   network: "mainnet",
   //network: "xdai",
   logo: logo,
-  launch: "2021-10-29",
+  launch: "2021-10-29 16:00 ",
   goal: 30,
   //gnosisSafe: "0xe8169d5b5287aa05082a9aa45f222075EFEB68E1",
   gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
