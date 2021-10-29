@@ -398,9 +398,9 @@ function App() {
                 borderWidth={"thin"}
                 p={5}
               >
-                <Text fontSize={"2xl"} align="center" color={"#EF495E"}>
+                {timerComponents.length ? (<Text fontSize={"2xl"} align="center" color={"#EF495E"}>
                   {config.gnosisSafe} <CopyToast toCopy={config.gnosisSafe} />
-                </Text>
+                </Text>) : 'YEET Done. LFG. Good will yeeting'}
               </Box>
             </Box>
             <SafeList provider={provider} />
