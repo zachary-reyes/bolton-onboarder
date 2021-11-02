@@ -8,7 +8,9 @@ import {
   ChakraProvider,
   Box,
   Flex,
+  IconButton,
   Stack,
+  HStack,
   VStack,
   Avatar,
   Text,
@@ -48,12 +50,18 @@ const config = {
 function CopyToast({ toCopy }) {
   const toast = useToast();
   return (
-    <CopyIcon
+    <IconButton
+      aria-label='Copy Gnosis safe address to clipboard.'
+      icon={<CopyIcon />}
+      fontSize={{ base: "lg", lg: "2xl" }}
+      background='transparent'
+      color='#EF495E'
+      _hover={{ background: "transparent" }}
       onClick={() => {
         navigator.clipboard.writeText(toCopy);
         toast({
           title: "Copied",
-          description: "Address Copied to clipboard",
+          description: "Address copied to clipboard",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -393,12 +401,18 @@ function App() {
                 )}
               </Flex>
             </Flex>
-            <Box justifyContent='center' paddingX={20} paddingBottom={8}>
+            <Box
+              justifyContent='center'
+              paddingX={{ base: 4, lg: 20 }}
+              paddingBottom={8}
+            >
               <Text paddingBottom={2} align='center' color={"#E5E5E5"}>
                 Yeet ({config.network}) funds to:{" "}
               </Text>
-              <Box
-                align='center'
+              <Flex
+                direction='row'
+                alignItems='center'
+                justifyContent='center'
                 rounded='16px'
                 backgroundColor='#0C0C0C'
                 border={"solid"}
@@ -407,13 +421,26 @@ function App() {
                 p={5}
               >
                 {timerComponents.length ? (
-                  <Text fontSize={"2xl"} align='center' color={"#EF495E"}>
-                    {config.gnosisSafe} <CopyToast toCopy={config.gnosisSafe} />
-                  </Text>
+                  <Flex
+                    alignItems='center'
+                    justifyContent='center'
+                    wrap={{ base: "wrap", lg: "nowrap" }}
+                    maxWidth='100%'
+                  >
+                    <Text
+                      fontSize={{ base: "lg", md: "2xl" }}
+                      align='center'
+                      color='#EF495E'
+                      width='100%'
+                    >
+                      {config.gnosisSafe}
+                    </Text>
+                    <CopyToast toCopy={config.gnosisSafe} />
+                  </Flex>
                 ) : (
                   "YEET Done. LFG. Good will yeeting"
                 )}
-              </Box>
+              </Flex>
             </Box>
             <SafeList provider={provider} />
             <Flex
