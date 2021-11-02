@@ -353,16 +353,14 @@ function App() {
 
   const timerComponents = Object.keys(timeLeft).map((interval, idx) => {
     return (
-      <Box m={10} key={idx}>
-        <VStack spacing='1'>
-          <Text color={"#EF495E"} fontSize={"5xl"} lineHeight='1'>
-            {timeLeft[interval] || "0"}
-          </Text>
-          <Text color={"#E5E5E5"} fontSize='sm'>
-            {interval}
-          </Text>
-        </VStack>
-      </Box>
+      <VStack padding={10} key={idx}>
+        <Text color={"#EF495E"} fontSize={"5xl"} lineHeight='1'>
+          {timeLeft[interval] || "0"}
+        </Text>
+        <Text color={"#E5E5E5"} fontSize='sm'>
+          {interval}
+        </Text>
+      </VStack>
     );
   });
 
@@ -386,18 +384,18 @@ function App() {
               />
             </Flex>
             <Flex alignItems='flex-start' justifyContent='center'>
-              <Flex>
+              <Flex alignItems='center'>
                 <Avatar
                   size='2xl'
                   backgroundColor='#0C0C0C'
                   src={config.logo}
                 />
+                {timerComponents.length ? (
+                  timerComponents
+                ) : (
+                  <span>Time's up!</span>
+                )}
               </Flex>
-              {timerComponents.length ? (
-                timerComponents
-              ) : (
-                <span>Time's up!</span>
-              )}
             </Flex>
             <Box justifyContent='center' pl={20} pr={20}>
               <Text align='center' color={"#E5E5E5"}>
