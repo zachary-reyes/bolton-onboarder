@@ -143,8 +143,8 @@ function SafeList({ provider }) {
   }, [account, provider, setSafeTxInfo, setSafeTxInfoAll, toggleList]);
 
   return (
-    <Box rounded='lg'>
-      <Flex justifyContent='center'>
+    <>
+      <Flex justifyContent='space-around'>
         <Box ml={5} mr={5}>
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
             Min Goal
@@ -155,7 +155,7 @@ function SafeList({ provider }) {
         </Box>
         <Box ml={5} mr={5} w={"50%"} align='center'>
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
-            In Bank {(+safeBalances).toFixed(4) > goal && " (goal reached)"}
+            In Bank {(+safeBalances).toFixed(4) > goal && " (Goal reached)"}
           </Text>
           <Text color={"#EF495E"} fontSize={"5xl"}>
             {safeBalances && (
@@ -246,7 +246,7 @@ function SafeList({ provider }) {
         </Box>
       </Flex>
       {/* <Button onClick={()=> setToggleList(true)}>vlivk</Button> */}
-    </Box>
+    </>
   );
 }
 function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
@@ -366,7 +366,7 @@ function App() {
 
   return (
     <ChakraProvider resetCSS>
-      <Box backgroundColor={"#151515"} minH='100vh'>
+      <Box backgroundColor='#0C0C0C' minH='100vh'>
         <Stack spacing={2}>
           <Stack spacing={2}>
             <Flex justifyContent='space-between' alignItems='center' p={0}>
@@ -383,13 +383,9 @@ function App() {
                 logoutOfWeb3Modal={logoutOfWeb3Modal}
               />
             </Flex>
-            <Flex alignItems='flex-start' justifyContent='center'>
+            <Flex alignItems='center' justifyContent='center'>
+              <Avatar size='2xl' backgroundColor='#0C0C0C' src={config.logo} />
               <Flex alignItems='center'>
-                <Avatar
-                  size='2xl'
-                  backgroundColor='#0C0C0C'
-                  src={config.logo}
-                />
                 {timerComponents.length ? (
                   timerComponents
                 ) : (
@@ -397,17 +393,16 @@ function App() {
                 )}
               </Flex>
             </Flex>
-            <Box justifyContent='center' pl={20} pr={20}>
-              <Text align='center' color={"#E5E5E5"}>
+            <Box justifyContent='center' paddingX={20} paddingBottom={8}>
+              <Text paddingBottom={2} align='center' color={"#E5E5E5"}>
                 Yeet ({config.network}) funds to:{" "}
               </Text>
               <Box
                 align='center'
-                rounded='lg'
+                rounded='16px'
                 backgroundColor='#0C0C0C'
                 border={"solid"}
-                borderRadius={5}
-                borderColor={"#EF495E"}
+                borderColor='#EF495E'
                 borderWidth={"thin"}
                 p={5}
               >
