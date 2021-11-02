@@ -9,6 +9,7 @@ import {
   Box,
   Flex,
   Stack,
+  VStack,
   Avatar,
   Text,
   Button,
@@ -23,7 +24,8 @@ const config = {
   network: "mainnet",
   //network: "xdai",
   logo: logo,
-  launch: "2021-10-29 16:00 ",
+  // launch: "2021-10-29 16:00 ",
+  launch: "2021-11-30 16:00", // changed this for testing
   goal: 20,
   //gnosisSafe: "0xe8169d5b5287aa05082a9aa45f222075EFEB68E1",
   gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
@@ -61,9 +63,9 @@ function CopyToast({ toCopy }) {
   );
 }
 
-function SafeList({ provider}) {
+function SafeList({ provider }) {
   const [account, setAccount] = useState("");
-  const [toggleList, ] = useState(false);
+  const [toggleList] = useState(false);
   const [safeTxInfo, setSafeTxInfo] = useState(null);
   const [, setSafeTxInfoAll] = useState(null);
   const [safeBalances, setSafeBalances] = useState(null);
@@ -83,10 +85,12 @@ function SafeList({ provider}) {
             bal.tokenAddress &&
             bal.tokenAddress.toLowerCase() === config.token.toLowerCase()
         );
-   
+
         setSafeBalances(
           utils.formatEther(
-            BigNumber.from(bal?.balance || 0).add(BigNumber.from(tokenBal?.balance || 0))
+            BigNumber.from(bal?.balance || 0).add(
+              BigNumber.from(tokenBal?.balance || 0)
+            )
           )
         );
         if (!provider) {
@@ -105,29 +109,33 @@ function SafeList({ provider}) {
         const ethWethIn = safeTx?.results.filter(
           (tx) =>
             // tx.from === account &&
-            (tx.tokenAddress === null ||
-              tx.tokenAddress.toLowerCase() === config.token.toLowerCase())
+            tx.tokenAddress === null ||
+            tx.tokenAddress.toLowerCase() === config.token.toLowerCase()
         );
         setSafeTxInfoAll(ethWethIn);
 
-        setSafeTxInfo(ethWethIn.filter((tx)=>tx.from === account));
+        setSafeTxInfo(ethWethIn.filter((tx) => tx.from === account));
         console.log(ethWethIn, toggleList);
         let total = 0;
-        ethWethIn.filter((tx)=>tx.from === account).forEach((bal) => {
-          total += parseFloat(utils.formatEther(bal.value));
-        });
+        ethWethIn
+          .filter((tx) => tx.from === account)
+          .forEach((bal) => {
+            total += parseFloat(utils.formatEther(bal.value));
+          });
         // console.log("total", total);
         setBoban(
           (total /
             utils.formatEther(
-              BigNumber.from(bal?.balance || 0).add(BigNumber.from(tokenBal?.balance || 0))
+              BigNumber.from(bal?.balance || 0).add(
+                BigNumber.from(tokenBal?.balance || 0)
+              )
             )) *
             100
         );
       } catch (err) {
         setSafeTxInfo(null);
         setSafeBalances(null);
-        setSafeTxInfoAll(null)
+        setSafeTxInfoAll(null);
         console.error(err);
       }
     }
@@ -135,8 +143,8 @@ function SafeList({ provider}) {
   }, [account, provider, setSafeTxInfo, setSafeTxInfoAll, toggleList]);
 
   return (
-    <Box rounded="lg">
-      <Flex justifyContent="center">
+    <Box rounded='lg'>
+      <Flex justifyContent='center'>
         <Box ml={5} mr={5}>
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
             Min Goal
@@ -145,7 +153,7 @@ function SafeList({ provider}) {
             {goal} {config.tokenSymbol}
           </Text>
         </Box>
-        <Box ml={5} mr={5} w={"50%"} align="center">
+        <Box ml={5} mr={5} w={"50%"} align='center'>
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
             In Bank {(+safeBalances).toFixed(4) > goal && " (goal reached)"}
           </Text>
@@ -175,8 +183,8 @@ function SafeList({ provider}) {
           h={20}
           ml={20}
           mr={20}
-          justifyContent="center"
-          align="center"
+          justifyContent='center'
+          align='center'
         >
           <Box>
             <Text fontSize={"2xl"} color={"#E5E5E5"}>
@@ -193,14 +201,14 @@ function SafeList({ provider}) {
         ml={20}
         mr={20}
       >
-        <Box w="100%">
-          <Flex backgroundColor="#0C0C0C" flexDirection={"column"}>
+        <Box w='100%'>
+          <Flex backgroundColor='#0C0C0C' flexDirection={"column"}>
             {safeTxInfo &&
               safeTxInfo?.map((tx, idx) => (
                 <Flex
-                  justifyContent="space-between"
-                  w="100%"
-                  align="center"
+                  justifyContent='space-between'
+                  w='100%'
+                  align='center'
                   h={20}
                   key={idx}
                 >
@@ -280,7 +288,7 @@ function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
 
   return (
     <Button
-      size="xs"
+      size='xs'
       m={5}
       backgroundColor={"#EF495E"}
       onClick={() => {
@@ -304,10 +312,10 @@ function calculateTimeLeft() {
 
   if (difference > 0) {
     timeLeft = {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
+      Days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      Hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      Minutes: Math.floor((difference / 1000 / 60) % 60),
+      Seconds: Math.floor((difference / 1000) % 60),
     };
   }
 
@@ -343,26 +351,30 @@ function App() {
   const timerComponents = Object.keys(timeLeft).map((interval, idx) => {
     return (
       <Box m={10} key={idx}>
-        <Text color={"#EF495E"} fontSize={"5xl"}>
-          {timeLeft[interval] || "0"}
-        </Text>
-        <Text color={"#E5E5E5"}>{interval}</Text>
+        <VStack spacing='1'>
+          <Text color={"#EF495E"} fontSize={"5xl"} lineHeight='1'>
+            {timeLeft[interval] || "0"}
+          </Text>
+          <Text color={"#E5E5E5"} fontSize='sm'>
+            {interval}
+          </Text>
+        </VStack>
       </Box>
     );
   });
 
   return (
     <ChakraProvider resetCSS>
-      <Box backgroundColor={"#151515"} minH="100vh">
+      <Box backgroundColor={"#151515"} minH='100vh'>
         <Stack spacing={2}>
           <Stack spacing={2}>
-            <Flex justifyContent="space-between" alignItems="center" p={0}>
+            <Flex justifyContent='space-between' alignItems='center' p={0}>
               <ArrowForwardIcon p={0} />
               <Flex
-                justifyContent="flex-end"
-                alignItems="center"
+                justifyContent='flex-end'
+                alignItems='center'
                 p={0}
-                w="30%"
+                w='30%'
               />
               <WalletButton
                 provider={provider}
@@ -370,11 +382,11 @@ function App() {
                 logoutOfWeb3Modal={logoutOfWeb3Modal}
               />
             </Flex>
-            <Flex alignItems="flex-start" justifyContent="center">
+            <Flex alignItems='flex-start' justifyContent='center'>
               <Flex>
                 <Avatar
-                  size="2xl"
-                  backgroundColor="#0C0C0C"
+                  size='2xl'
+                  backgroundColor='#0C0C0C'
                   src={config.logo}
                 />
               </Flex>
@@ -384,38 +396,42 @@ function App() {
                 <span>Time's up!</span>
               )}
             </Flex>
-            <Box justifyContent="center" pl={20} pr={20}>
-              <Text align="center" color={"#E5E5E5"}>
+            <Box justifyContent='center' pl={20} pr={20}>
+              <Text align='center' color={"#E5E5E5"}>
                 Yeet ({config.network}) funds to:{" "}
               </Text>
               <Box
-                align="center"
-                rounded="lg"
-                backgroundColor="#0C0C0C"
+                align='center'
+                rounded='lg'
+                backgroundColor='#0C0C0C'
                 border={"solid"}
                 borderRadius={5}
                 borderColor={"#EF495E"}
                 borderWidth={"thin"}
                 p={5}
               >
-                {timerComponents.length ? (<Text fontSize={"2xl"} align="center" color={"#EF495E"}>
-                  {config.gnosisSafe} <CopyToast toCopy={config.gnosisSafe} />
-                </Text>) : 'YEET Done. LFG. Good will yeeting'}
+                {timerComponents.length ? (
+                  <Text fontSize={"2xl"} align='center' color={"#EF495E"}>
+                    {config.gnosisSafe} <CopyToast toCopy={config.gnosisSafe} />
+                  </Text>
+                ) : (
+                  "YEET Done. LFG. Good will yeeting"
+                )}
               </Box>
             </Box>
             <SafeList provider={provider} />
             <Flex
               pr={20}
-              alignItems="center"
-              justifyContent="flex-end"
+              alignItems='center'
+              justifyContent='flex-end'
               color={"#EF495E"}
             >
               <Text>
                 <Link href={config.website} isExternal>
-                  More about MFT <ExternalLinkIcon mx="2px" />
+                  More about MFT <ExternalLinkIcon mx='2px' />
                 </Link>
                 <Link ml={6} href={"https://daohaus.club/"} isExternal>
-                  Bolt on for Daohaus <ExternalLinkIcon mx="2px" />
+                  Bolt on for DAOhaus <ExternalLinkIcon mx='2px' />
                 </Link>
               </Text>
             </Flex>
