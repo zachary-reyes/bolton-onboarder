@@ -157,15 +157,15 @@ function SafeList({ provider }) {
           <Text color={"#E5E5E5"} fontSize={"1xl"}>
             Min Goal
           </Text>
-          <Text color={"#EF495E"} fontSize={"5xl"}>
+          <Text color={"#EF495E"} fontSize={{ base: "3xl", lg: "5xl" }}>
             {goal} {config.tokenSymbol}
           </Text>
         </Box>
         <Box ml={5} mr={5} w={"50%"} align='center'>
-          <Text color={"#E5E5E5"} fontSize={"1xl"}>
+          <Text color={"#E5E5E5"} fontSize='xl'>
             In Bank {(+safeBalances).toFixed(4) > goal && " (Goal reached)"}
           </Text>
-          <Text color={"#EF495E"} fontSize={"5xl"}>
+          <Text color={"#EF495E"} fontSize={{ base: "3xl", lg: "5xl" }}>
             {safeBalances && (
               <span>{`${(+safeBalances).toFixed(4)} ${
                 config.tokenSymbol
@@ -174,10 +174,10 @@ function SafeList({ provider }) {
           </Text>
         </Box>
         <Box ml={5} mr={5}>
-          <Text color={"#E5E5E5"} fontSize={"1xl"}>
+          <Text color={"#E5E5E5"} fontSize='xl'>
             Your Power
           </Text>
-          <Text color={"#EF495E"} fontSize={"5xl"}>
+          <Text color={"#EF495E"} fontSize={{ base: "3xl", lg: "5xl" }}>
             {boban ? boban.toFixed(2) : 0}
           </Text>
         </Box>
@@ -451,21 +451,25 @@ function App() {
               </Flex>
             </Box>
             <SafeList provider={provider} />
-            <Flex
-              pr={20}
-              alignItems='center'
-              justifyContent='flex-end'
-              color={"#EF495E"}
+            <HStack
+              color='#EF495E'
+              justifyContent={{ base: "center", lg: "flex-end" }}
+              spacing={{ base: "2", lg: "4" }}
+              paddingRight={{ base: "0", lg: "20" }}
+              paddingTop={{ base: "2", lg: "6" }}
+              paddingBottom={{ base: "4", lg: "8" }} // need to find the additional margin={2} so we can remove this
             >
               <Text>
                 <Link href={config.website} isExternal>
                   More about MFT <ExternalLinkIcon mx='2px' />
                 </Link>
-                <Link ml={6} href={"https://daohaus.club/"} isExternal>
+              </Text>
+              <Text>
+                <Link href={"https://daohaus.club/"} isExternal>
                   Bolt on for DAOhaus <ExternalLinkIcon mx='2px' />
                 </Link>
               </Text>
-            </Flex>
+            </HStack>
           </Stack>
         </Stack>
       </Box>
