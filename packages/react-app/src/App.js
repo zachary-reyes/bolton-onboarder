@@ -361,8 +361,12 @@ function App() {
 
   const timerComponents = Object.keys(timeLeft).map((interval, idx) => {
     return (
-      <VStack padding={10} key={idx}>
-        <Text color={"#EF495E"} fontSize={"5xl"} lineHeight='1'>
+      <VStack padding={{ base: "4", lg: 10 }} key={idx}>
+        <Text
+          color={"#EF495E"}
+          fontSize={{ base: "3xl", lg: "5xl" }}
+          lineHeight='1'
+        >
           {timeLeft[interval] || "0"}
         </Text>
         <Text color={"#E5E5E5"} fontSize='sm'>
@@ -391,9 +395,13 @@ function App() {
                 logoutOfWeb3Modal={logoutOfWeb3Modal}
               />
             </Flex>
-            <Flex alignItems='center' justifyContent='center'>
+            <Flex
+              direction={{ base: "column", lg: "row" }}
+              alignItems='center'
+              justifyContent='center'
+            >
               <Avatar size='2xl' backgroundColor='#0C0C0C' src={config.logo} />
-              <Flex alignItems='center'>
+              <Flex alignItems='center' wrap={{ base: "wrap", lg: "nowrap" }}>
                 {timerComponents.length ? (
                   timerComponents
                 ) : (
@@ -418,7 +426,7 @@ function App() {
                 border={"solid"}
                 borderColor='#EF495E'
                 borderWidth={"thin"}
-                p={5}
+                padding={{ base: "4", lg: "5" }}
               >
                 {timerComponents.length ? (
                   <Flex
