@@ -154,18 +154,18 @@ function SafeList({ provider }) {
     <>
       <Flex justifyContent='space-around'>
         <Box ml={5} mr={5}>
-          <Text color='#E5E5E5' fontSize='xl'>
+          <Text color='#E5E5E5' fontSize={{ base: "xl" }}>
             Min Goal
           </Text>
-          <Text color='#EF495E' fontSize={{ base: "3xl", lg: "5xl" }}>
+          <Text color='#EF495E' fontSize={{ base: "2xl", lg: "5xl" }}>
             {goal} {config.tokenSymbol}
           </Text>
         </Box>
         <Box ml={5} mr={5} w={"50%"} align='center'>
-          <Text color='#E5E5E5' fontSize='xl'>
+          <Text color='#E5E5E5' fontSize={{ base: "xl" }}>
             In Bank {(+safeBalances).toFixed(4) > goal && " (Goal reached)"}
           </Text>
-          <Text color='#EF495E' fontSize={{ base: "3xl", lg: "5xl" }}>
+          <Text color='#EF495E' fontSize={{ base: "2xl", lg: "5xl" }}>
             {safeBalances && (
               <span>{`${(+safeBalances).toFixed(4)} ${
                 config.tokenSymbol
@@ -174,10 +174,10 @@ function SafeList({ provider }) {
           </Text>
         </Box>
         <Box ml={5} mr={5}>
-          <Text color='#E5E5E5' fontSize='xl'>
+          <Text color='#E5E5E5' fontSize={{ base: "xl" }}>
             Your Power
           </Text>
-          <Text color='#EF495E' fontSize={{ base: "3xl", lg: "5xl" }}>
+          <Text color='#EF495E' fontSize={{ base: "2xl", lg: "5xl" }}>
             {boban ? boban.toFixed(2) : 0}
           </Text>
         </Box>
