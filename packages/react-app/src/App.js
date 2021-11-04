@@ -2,7 +2,7 @@ import { utils, BigNumber } from "ethers";
 
 import React, { useEffect, useState } from "react";
 
-import logo from "./meta_chillcopy.png";
+import logo from "./dh.png";
 import useWeb3Modal from "./hooks/useWeb3Modal";
 import {
   ChakraProvider,
@@ -23,19 +23,17 @@ import { ArrowForwardIcon, CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { fetchSafeBalances, fetchSafeIncomingTxs } from "./utils/requests";
 
 const config = {
-  network: "mainnet",
-  //network: "xdai",
-  logo: logo,
-  launch: "2021-10-29 16:00 ",
-  // launch: "2021-11-30 16:00", // changed this for testing
-  goal: 20,
-  //gnosisSafe: "0xe8169d5b5287aa05082a9aa45f222075EFEB68E1",
+  network: "mainnet", // set network this will be using mainnet/xdai
+  logo: logo, // change the logo here
+  projectName: 'YEET',
+  mainColor: '#fe1d5b',
+  launch: "2021-10-29 16:00 ", // end date of the yeet
+  goal: 20, // goal of the yeet
   gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
-  // nativeToken: true,
-  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  //token: "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
-  tokenSymbol: "Ξ",
-  website: "https://hackmd.io/_S8byns4RgazP7YenJJl9w",
+  // nativeToken: true,  // not used
+  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", // token yeeting in WETH
+  tokenSymbol: "Ξ", // symbol to dsiplay
+  website: "https://hackmd.io/@daohaus/H17m16ZwK", // information site
 };
 
 // const addresses = {
@@ -55,7 +53,7 @@ function CopyToast({ toCopy }) {
       icon={<CopyIcon />}
       fontSize={{ base: "lg", lg: "2xl" }}
       background='transparent'
-      color='#EF495E'
+      color={config.mainColor}
       _hover={{ background: "transparent" }}
       onClick={() => {
         navigator.clipboard.writeText(toCopy);
@@ -157,7 +155,7 @@ function SafeList({ provider }) {
           <Text color='#E5E5E5' fontSize={{ base: "xl" }}>
             Min Goal
           </Text>
-          <Text color='#EF495E' fontSize={{ base: "2xl", lg: "5xl" }}>
+          <Text color={config.mainColor} fontSize={{ base: "2xl", lg: "5xl" }}>
             {goal} {config.tokenSymbol}
           </Text>
         </Box>
@@ -165,7 +163,7 @@ function SafeList({ provider }) {
           <Text color='#E5E5E5' fontSize={{ base: "xl" }}>
             In Bank {(+safeBalances).toFixed(4) > goal && " (Goal reached)"}
           </Text>
-          <Text color='#EF495E' fontSize={{ base: "2xl", lg: "5xl" }}>
+          <Text color={config.mainColor} fontSize={{ base: "2xl", lg: "5xl" }}>
             {safeBalances && (
               <span>{`${(+safeBalances).toFixed(4)} ${
                 config.tokenSymbol
@@ -177,7 +175,7 @@ function SafeList({ provider }) {
           <Text color='#E5E5E5' fontSize={{ base: "xl" }}>
             Your Power
           </Text>
-          <Text color='#EF495E' fontSize={{ base: "2xl", lg: "5xl" }}>
+          <Text color={config.mainColor} fontSize={{ base: "2xl", lg: "5xl" }}>
             {boban ? boban.toFixed(2) : 0}
           </Text>
         </Box>
@@ -241,7 +239,7 @@ function SafeList({ provider }) {
                     </Text>
                   </Box>
                   <Box m={10}>
-                    <Text fontSize={"lg"} color={"#EF495E"}>
+                    <Text fontSize={"lg"} color={config.mainColor}>
                       {tx.transactionHash.substring(0, 6) +
                         "..." +
                         tx.transactionHash.substring(60)}
@@ -301,7 +299,7 @@ function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
       fontWeight='normal'
       margin={5}
       padding={4}
-      backgroundColor={"#EF495E"}
+      backgroundColor={config.mainColor}
       onClick={() => {
         if (!provider) {
           loadWeb3Modal();
@@ -363,7 +361,7 @@ function App() {
     return (
       <VStack padding={{ base: "4", lg: 10 }} key={idx}>
         <Text
-          color={"#EF495E"}
+          color={config.mainColor}
           fontSize={{ base: "3xl", lg: "5xl" }}
           lineHeight='1'
         >
@@ -401,7 +399,7 @@ function App() {
               justifyContent='center'
             >
               <Avatar size='2xl' backgroundColor='#0C0C0C' src={config.logo} />
-              <Flex alignItems='center' wrap={{ base: "wrap", lg: "nowrap" }}>
+              <Flex color={config.mainColor} alignItems='center' wrap={{ base: "wrap", lg: "nowrap" }}>
                 {timerComponents.length ? (
                   timerComponents
                 ) : (
@@ -424,7 +422,7 @@ function App() {
                 rounded='16px'
                 backgroundColor='#0C0C0C'
                 border={"solid"}
-                borderColor='#EF495E'
+                borderColor={config.mainColor}
                 borderWidth={"thin"}
                 padding={{ base: "4", lg: "5" }}
               >
@@ -438,7 +436,7 @@ function App() {
                     <Text
                       fontSize={{ base: "lg", md: "2xl" }}
                       align='center'
-                      color='#EF495E'
+                      color={config.mainColor}
                       width='100%'
                     >
                       {config.gnosisSafe}
@@ -446,13 +444,13 @@ function App() {
                     <CopyToast toCopy={config.gnosisSafe} />
                   </Flex>
                 ) : (
-                  "YEET Done. LFG. Good will yeeting"
+                  <Text color={config.mainColor}>Done. LFG</Text>
                 )}
               </Flex>
             </Box>
             <SafeList provider={provider} />
             <HStack
-              color='#EF495E'
+              color={config.mainColor}
               justifyContent={{ base: "center", lg: "flex-end" }}
               spacing={{ base: "2", lg: "4" }}
               paddingRight={{ base: "0", lg: "20" }}
@@ -461,7 +459,7 @@ function App() {
             >
               <Text>
                 <Link href={config.website} isExternal>
-                  More about MFT <ExternalLinkIcon mx='2px' />
+                  More about {config.projectName} <ExternalLinkIcon mx='2px' />
                 </Link>
               </Text>
               <Text>
