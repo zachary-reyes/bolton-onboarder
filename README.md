@@ -1,3 +1,38 @@
+## YEET DAO
+
+Headless Gnosis safe Yeeter
+
+## to update config
+
+in /package/react-app/App.js
+
+update the config object with what you want
+
+```
+const config = {
+  network: "mainnet", // set network this will be using mainnet/xdai
+  logo: logo, // change the logo here
+  projectName: 'YEET',
+  mainColor: '#fe1d5b',
+  launch: "2021-10-29 16:00 ", // end date of the yeet
+  goal: 20, // goal of the yeet
+  gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523", // safe address you want members to send to
+  // nativeToken: true,  // not used
+  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", // token yeeting in WETH
+  tokenSymbol: "Ξ", // symbol to dsiplay
+  website: "https://hackmd.io/@daohaus/H17m16ZwK", // information site
+};
+```
+
+## example deploy to a host
+
+netlify
+
+* base directory: not set
+* build command: yarn react-app:build
+* Publish directory: packages/react-app/build
+
+
 This project was bootstrapped with [Create Eth App](https://github.com/paulrberg/create-eth-app).
 
 ## Project Structure

@@ -27,7 +27,7 @@ const config = {
   logo: logo, // change the logo here
   projectName: 'YEET',
   mainColor: '#fe1d5b',
-  launch: "2021-10-29 16:00 ", // end date of the yeet
+  launch: "2021-11-07 16:00 ", // end date of the yeet
   goal: 20, // goal of the yeet
   gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
   // nativeToken: true,  // not used
