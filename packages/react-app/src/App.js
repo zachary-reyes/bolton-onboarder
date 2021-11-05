@@ -2,7 +2,7 @@ import { utils, BigNumber } from "ethers";
 
 import React, { useEffect, useState } from "react";
 
-import logo from "./dh.png";
+import logo from "./Padawan_PfP.png";
 import useWeb3Modal from "./hooks/useWeb3Modal";
 import {
   ChakraProvider,
@@ -23,17 +23,21 @@ import { ArrowForwardIcon, CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { fetchSafeBalances, fetchSafeIncomingTxs } from "./utils/requests";
 
 const config = {
-  network: "mainnet", // set network this will be using mainnet/xdai
+  network: "8545", // set network this will be using mainnet/xdai
   logo: logo, // change the logo here
-  projectName: 'YEET',
+  projectName: 'PadawanDAO',
   mainColor: '#fe1d5b',
   launch: "2021-11-07 16:00 ", // end date of the yeet
   goal: 20, // goal of the yeet
-  gnosisSafe: "0xEE5504F0a3604d66470aE3c803A762D425000523",
+  gnosisSafe:
+  "0x?????????????",
+  // "0xEE5504F0a3604d66470aE3c803A762D425000523",
   // nativeToken: true,  // not used
-  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", // token yeeting in WETH
+  token:
+  "0x???",
+  //  "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", // token yeeting in WETH
   tokenSymbol: "Ξ", // symbol to dsiplay
-  website: "https://hackmd.io/@daohaus/H17m16ZwK", // information site
+  website: "https://soundcloud.com/el47chapo", // information site
 };
 
 // const addresses = {
@@ -463,8 +467,8 @@ function App() {
                 </Link>
               </Text>
               <Text>
-                <Link href={"https://daohaus.club/"} isExternal>
-                  Bolt on for DAOhaus <ExternalLinkIcon mx='2px' />
+                <Link href={"https://twitter.com/ZARface"} isExternal>
+                  Bolt on for ZARface <ExternalLinkIcon mx='2px' />
                 </Link>
               </Text>
             </HStack>
